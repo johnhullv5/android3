@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Lab Assignment 3 - Fall 2017</string>
+
+    <string name="txt_title">Select exercises to demonstrate:</string>
+    <string name="txt_storage">Occupied space:</string>
+    <string name="txtAvailableSpace">Available Space</string>
+    <string name="txtRed">Red</string>
+    <string name="txtYellow">Yellow</string>
+    <string name="txtCyan">Cyan</string>
+
+
+    <drawable name="blueDrawable">#0000FF</drawable>
+    <drawable name="yellowDrawable">#FFFF00</drawable>
+
+    <string-array name="settings">
+
+        <item> Exercise 1</item>
+        <item> Exercise 2</item>
+        <item> Exercise 3</item>
+
+    </string-array>
+
+    <string-array name="thickness">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+
+    </string-array>
+
+</resources>
