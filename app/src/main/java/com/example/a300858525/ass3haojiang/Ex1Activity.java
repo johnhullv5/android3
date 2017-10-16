@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -24,6 +25,10 @@ public class Ex1Activity extends AppCompatActivity implements AdapterView.OnItem
 
     ImageView reusableImageView;
     TextView textView;
+    ImageView up;
+    ImageView down;
+    ImageView left;
+    ImageView right;
 
     //
     int startx = 100;
@@ -93,6 +98,101 @@ public class Ex1Activity extends AppCompatActivity implements AdapterView.OnItem
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
 
+        addListenerOnButton();
+
+
+
+    }
+
+    private void addListenerOnButton()
+    {
+        up = (ImageView) findViewById(R.id.up);
+        up.setClickable(true);
+        up.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "Selected: up" , Toast.LENGTH_LONG).show();
+                reusableImageView.setFocusable(true);
+                reusableImageView.requestFocus();
+                endy=endy-5;
+                //drawLine( keyCode,canvas);
+                textView.setText("y="+String.valueOf(endy));
+                //canvas.drawLine(100,100,1000,1000,paint);
+                canvas.drawLine(startx, starty, endx, endy, paint);
+                startx=endx;
+                starty=endy;
+                //moveRect(canvas);
+                reusableImageView.invalidate();
+            }
+
+        });
+
+        left = (ImageView) findViewById(R.id.left);
+        left.setClickable(true);
+        left.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "Selected: up" , Toast.LENGTH_LONG).show();
+                reusableImageView.setFocusable(true);
+                reusableImageView.requestFocus();
+                endx=endx-5;
+                //drawLine( keyCode,canvas);
+                textView.setText("y="+String.valueOf(endy));
+                //canvas.drawLine(100,100,1000,1000,paint);
+                canvas.drawLine(startx, starty, endx, endy, paint);
+                startx=endx;
+                starty=endy;
+                //moveRect(canvas);
+                reusableImageView.invalidate();
+            }
+
+        });
+
+        right = (ImageView) findViewById(R.id.right);
+        right.setClickable(true);
+        right.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "Selected: up" , Toast.LENGTH_LONG).show();
+                reusableImageView.setFocusable(true);
+                reusableImageView.requestFocus();
+                endx=endx+5;
+                //drawLine( keyCode,canvas);
+                textView.setText("y="+String.valueOf(endy));
+                //canvas.drawLine(100,100,1000,1000,paint);
+                canvas.drawLine(startx, starty, endx, endy, paint);
+                startx=endx;
+                starty=endy;
+                //moveRect(canvas);
+                reusableImageView.invalidate();
+            }
+
+        });
+
+        down = (ImageView) findViewById(R.id.down);
+        down.setClickable(true);
+        down.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "Selected: up" , Toast.LENGTH_LONG).show();
+                reusableImageView.setFocusable(true);
+                reusableImageView.requestFocus();
+                endy=endy+5;
+                //drawLine( keyCode,canvas);
+                textView.setText("y="+String.valueOf(endy));
+                //canvas.drawLine(100,100,1000,1000,paint);
+                canvas.drawLine(startx, starty, endx, endy, paint);
+                startx=endx;
+                starty=endy;
+                //moveRect(canvas);
+                reusableImageView.invalidate();
+            }
+
+        });
 
 
     }
@@ -138,7 +238,7 @@ public class Ex1Activity extends AppCompatActivity implements AdapterView.OnItem
     public void clearCanvas(View v)
     {
         canvas.drawColor(Color.WHITE);
-        textView.setText("clear");
+        textView.setText("y=");
         //canvas.drawCircle(canvas.getWidth()/2,canvas.getHeight()/2,canvas.getWidth()/3,paint);
     }
     //
