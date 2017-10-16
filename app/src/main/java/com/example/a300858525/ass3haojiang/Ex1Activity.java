@@ -153,7 +153,7 @@ public class Ex1Activity extends AppCompatActivity implements AdapterView.OnItem
 
     public void drawLine(int keyCode, Canvas canvas)
     {
-        textView.setText(String.valueOf(endy));
+        textView.setText("y="+String.valueOf(endy));
         //canvas.drawLine(100,100,1000,1000,paint);
         canvas.drawLine(startx, starty, endx, endy, paint);
         startx=endx;
