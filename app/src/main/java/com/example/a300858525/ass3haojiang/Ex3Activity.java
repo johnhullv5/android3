@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.graphics.Path;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class Ex3Activity extends AppCompatActivity {
     ImageView img;
@@ -24,7 +26,7 @@ public class Ex3Activity extends AppCompatActivity {
         final Button onButton = (Button) findViewById(R.id.start2);
         onButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                performAnimation(R.anim.spin);
+                performAnimation(v,R.anim.spin);
             }
         });
 
@@ -53,12 +55,13 @@ public class Ex3Activity extends AppCompatActivity {
 
     }
 
-    private void performAnimation(int animationResourceID)
+    private void performAnimation(View v,int animationResourceID)
     {
         // We will animate the imageview
         final ImageView reusableImageView = (ImageView)findViewById(R.id.earth);
         reusableImageView.setImageResource(R.drawable.earth);
         reusableImageView.setVisibility(View.VISIBLE);
+
 
         final ImageView moonview = (ImageView)findViewById(R.id.moon);
         moonview.setImageResource(R.drawable.moon);
@@ -72,28 +75,34 @@ public class Ex3Activity extends AppCompatActivity {
 //        reusableImageView.startAnimation(an);
 
 
-//        AnimatorSet dogeAnimatorSet =
-//                (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.rot);
-//        // 4
-//        dogeAnimatorSet.setTarget(reusableImageView);
-//        dogeAnimatorSet.setDuration(10000);
+        AnimatorSet dogeAnimatorSet =
+                (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.test);
+        // 4
+        dogeAnimatorSet.setTarget(reusableImageView);
+        dogeAnimatorSet.setDuration(10000);
 //        dogeAnimatorSet.start();
 
 
-        ValueAnimator animator = ValueAnimator.ofFloat(0, 1); // values from 0 to 1
-        animator.setDuration(20000); // 5 seconds duration from 0 to 1
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = ((Float) (animation.getAnimatedValue()))
-                        .floatValue();
-                // Set translation of your view here. Position can be calculated
-                // out of value. This code should move the view in a half circle.
-                moonview.setTranslationX((float)(300.0 * Math.sin(value*Math.PI)));
-                moonview.setTranslationY((float)(300.0 * Math.cos(value*Math.PI)));
-            }
-        });
+
+
+//        ValueAnimator animator = ValueAnimator.ofFloat(0, 1); // values from 0 to 1
+//        animator.setDuration(20000); // 5 seconds duration from 0 to 1
+//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+//        {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                float value = ((Float) (animation.getAnimatedValue()))
+//                        .floatValue();
+//                // Set translation of your view here. Position can be calculated
+//                // out of value. This code should move the view in a half circle.
+//                moonview.setTranslationX((float)(300.0 * Math.sin(value*Math.PI)));
+//                moonview.setTranslationY((float)(300.0 * Math.cos(value*Math.PI)));
+//            }
+//        });
+
+        Path p = new Path();
+        p.addCircle(0,0,300, Path.Direction.CCW);
+        ValueAnimator pathAnimator = ObjectAnimator.ofFloat(moonview, "x", "y", p);
 
 //        ValueAnimator positionAnimator = ValueAnimator.ofFloat(0, -500);
 //
@@ -107,14 +116,24 @@ public class Ex3Activity extends AppCompatActivity {
 //        });
 //
 //
-        ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(reusableImageView, "rotation", 0, 360f);
+        //ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(reusableImageView, "rotation", 0, 360f);
 // 4
         AnimatorSet animatorSet = new AnimatorSet();
 // 5
-        animatorSet.play(animator).with(rotationAnimator);
+        animatorSet.play(pathAnimator);//.with(rotationAnimator);
 // 6
         animatorSet.setDuration(20000);
-        animatorSet.start();
+        //animatorSet.start();
+
+        AnimatorSet bothAnimatorSet = new AnimatorSet();
+        bothAnimatorSet.playTogether(animatorSet, dogeAnimatorSet);
+        // 6
+        bothAnimatorSet.setDuration(20000);
+        bothAnimatorSet.start();
+        Toast.makeText(v.getContext(), "earth: x " +String.valueOf(reusableImageView.getX()), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "earth: y " +String.valueOf(reusableImageView.getY()), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "moon: x " +String.valueOf(moonview.getX()), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "moon: y " +String.valueOf(moonview.getY()), Toast.LENGTH_LONG).show();
     }
 
     class MyAnimationListener implements Animation.AnimationListener {
