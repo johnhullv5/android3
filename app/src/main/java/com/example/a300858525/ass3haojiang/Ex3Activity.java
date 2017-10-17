@@ -76,7 +76,7 @@ public class Ex3Activity extends AppCompatActivity {
 
 
         AnimatorSet dogeAnimatorSet =
-                (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.test);
+                (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.rot);
         // 4
         dogeAnimatorSet.setTarget(reusableImageView);
         dogeAnimatorSet.setDuration(10000);
@@ -101,7 +101,7 @@ public class Ex3Activity extends AppCompatActivity {
 //        });
 
         Path p = new Path();
-        p.addCircle(0,0,300, Path.Direction.CCW);
+        p.addCircle(255,682,300, Path.Direction.CCW);
         ValueAnimator pathAnimator = ObjectAnimator.ofFloat(moonview, "x", "y", p);
 
 //        ValueAnimator positionAnimator = ValueAnimator.ofFloat(0, -500);
@@ -123,17 +123,28 @@ public class Ex3Activity extends AppCompatActivity {
         animatorSet.play(pathAnimator);//.with(rotationAnimator);
 // 6
         animatorSet.setDuration(20000);
-        //animatorSet.start();
+        animatorSet.start();
 
         AnimatorSet bothAnimatorSet = new AnimatorSet();
         bothAnimatorSet.playTogether(animatorSet, dogeAnimatorSet);
         // 6
         bothAnimatorSet.setDuration(20000);
-        bothAnimatorSet.start();
-        Toast.makeText(v.getContext(), "earth: x " +String.valueOf(reusableImageView.getX()), Toast.LENGTH_LONG).show();
-        Toast.makeText(v.getContext(), "earth: y " +String.valueOf(reusableImageView.getY()), Toast.LENGTH_LONG).show();
-        Toast.makeText(v.getContext(), "moon: x " +String.valueOf(moonview.getX()), Toast.LENGTH_LONG).show();
-        Toast.makeText(v.getContext(), "moon: y " +String.valueOf(moonview.getY()), Toast.LENGTH_LONG).show();
+        //bothAnimatorSet.start();
+        int[] location_earth = new int[2];
+
+        reusableImageView.getLocationOnScreen(location_earth);
+        int x = location_earth[0];
+        int y = location_earth[1];
+
+        int[] location_moon = new int[2];
+
+        moonview.getLocationOnScreen(location_moon);
+        int x_m = location_moon[0];
+        int y_m = location_moon[1];
+        Toast.makeText(v.getContext(), "earth: x " +String.valueOf(x), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "earth: y " +String.valueOf(y), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "moon: x " +String.valueOf(x_m), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "moon: y " +String.valueOf(y_m), Toast.LENGTH_LONG).show();
     }
 
     class MyAnimationListener implements Animation.AnimationListener {
