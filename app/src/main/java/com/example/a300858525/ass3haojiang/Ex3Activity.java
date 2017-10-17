@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 public class Ex3Activity extends AppCompatActivity {
     ImageView img;
+    AnimatorSet animatorSet;
+    AnimatorSet bothAnimatorSet;
+     ImageView reusableImageView;
+     ImageView moonview;
+    AnimatorSet dogeAnimatorSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,25 @@ public class Ex3Activity extends AppCompatActivity {
             }
         });
 
+        reusableImageView = (ImageView)findViewById(R.id.earth);
+        reusableImageView.setImageResource(R.drawable.earth);
+        reusableImageView.setVisibility(View.VISIBLE);
+
+        moonview = (ImageView)findViewById(R.id.moon);
+        moonview.setImageResource(R.drawable.moon);
+        moonview.setVisibility(View.VISIBLE);
+
     }
 
+    private void stopAnimation()
+    {
+        bothAnimatorSet.end();
+        moonview.setVisibility(View.INVISIBLE);
+        //reusableImageView.setVisibility();
+
+    }
+
+    //unused method to animation
     private void startAnimation()
     {
         img = (ImageView)findViewById(R.id.earth);
@@ -50,22 +72,15 @@ public class Ex3Activity extends AppCompatActivity {
         rotateAnimation.start();
     }
 
-    private void stopAnimation()
-    {
 
-    }
 
     private void performAnimation(View v,int animationResourceID)
     {
-        // We will animate the imageview
-        final ImageView reusableImageView = (ImageView)findViewById(R.id.earth);
-        reusableImageView.setImageResource(R.drawable.earth);
-        reusableImageView.setVisibility(View.VISIBLE);
 
 
-        final ImageView moonview = (ImageView)findViewById(R.id.moon);
-        moonview.setImageResource(R.drawable.moon);
+
         moonview.setVisibility(View.VISIBLE);
+
 //
 //        // Load the appropriate animation
 //        Animation an =  AnimationUtils.loadAnimation(this, animationResourceID);
@@ -75,9 +90,9 @@ public class Ex3Activity extends AppCompatActivity {
 //        reusableImageView.startAnimation(an);
 
 
-        AnimatorSet dogeAnimatorSet =
+         dogeAnimatorSet =
                 (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.rot);
-        // 4
+
         dogeAnimatorSet.setTarget(reusableImageView);
         dogeAnimatorSet.setDuration(10000);
 //        dogeAnimatorSet.start();
@@ -101,12 +116,13 @@ public class Ex3Activity extends AppCompatActivity {
 //        });
 
         Path p = new Path();
-        p.addCircle(255,682,300, Path.Direction.CCW);
+        p.addCircle(540,481,413, Path.Direction.CCW);
         ValueAnimator pathAnimator = ObjectAnimator.ofFloat(moonview, "x", "y", p);
+        pathAnimator.setRepeatCount(10);
 
 //        ValueAnimator positionAnimator = ValueAnimator.ofFloat(0, -500);
 //
-//// 2
+
 //        positionAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 //            @Override
 //            public void onAnimationUpdate(ValueAnimator animation) {
@@ -117,34 +133,33 @@ public class Ex3Activity extends AppCompatActivity {
 //
 //
         //ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(reusableImageView, "rotation", 0, 360f);
-// 4
-        AnimatorSet animatorSet = new AnimatorSet();
-// 5
-        animatorSet.play(pathAnimator);//.with(rotationAnimator);
-// 6
-        animatorSet.setDuration(20000);
-        animatorSet.start();
 
-        AnimatorSet bothAnimatorSet = new AnimatorSet();
+        animatorSet = new AnimatorSet();
+
+        animatorSet.play(pathAnimator);//.with(rotationAnimator);
+
+        animatorSet.setDuration(10000);
+
+        //animatorSet.start();
+
+        bothAnimatorSet = new AnimatorSet();
         bothAnimatorSet.playTogether(animatorSet, dogeAnimatorSet);
         // 6
         bothAnimatorSet.setDuration(20000);
-        //bothAnimatorSet.start();
-        int[] location_earth = new int[2];
+        bothAnimatorSet.start();
 
-        reusableImageView.getLocationOnScreen(location_earth);
-        int x = location_earth[0];
-        int y = location_earth[1];
 
-        int[] location_moon = new int[2];
+        float centreX=reusableImageView.getX() + reusableImageView.getWidth()  / 2;
+        float centreY=reusableImageView.getY() + reusableImageView.getHeight() / 2;
 
-        moonview.getLocationOnScreen(location_moon);
-        int x_m = location_moon[0];
-        int y_m = location_moon[1];
-        Toast.makeText(v.getContext(), "earth: x " +String.valueOf(x), Toast.LENGTH_LONG).show();
-        Toast.makeText(v.getContext(), "earth: y " +String.valueOf(y), Toast.LENGTH_LONG).show();
-        Toast.makeText(v.getContext(), "moon: x " +String.valueOf(x_m), Toast.LENGTH_LONG).show();
-        Toast.makeText(v.getContext(), "moon: y " +String.valueOf(y_m), Toast.LENGTH_LONG).show();
+        float centreXm=moonview.getX() + moonview.getWidth()  / 2;
+        float centreYm=moonview.getY() + moonview.getHeight() / 2;
+
+
+        Toast.makeText(v.getContext(), "earth: x " +String.valueOf(centreX), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "earth: y " +String.valueOf(centreY), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "moon: x " +String.valueOf(centreXm), Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "moon: y " +String.valueOf(centreYm), Toast.LENGTH_LONG).show();
     }
 
     class MyAnimationListener implements Animation.AnimationListener {
@@ -153,6 +168,9 @@ public class Ex3Activity extends AppCompatActivity {
             // Hide our ImageView
             ImageView reusableImageView = (ImageView)findViewById(R.id.earth);
             reusableImageView.setVisibility(View.INVISIBLE);
+
+            //ImageView moonImageView = (ImageView)findViewById(R.id.moon);
+            moonview.setVisibility(View.INVISIBLE);
 
             // Enable all buttons once animation is over
             //toggleButtons(true);
